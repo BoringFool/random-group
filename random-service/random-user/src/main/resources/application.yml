@@ -1,0 +1,79 @@
+# application.yml
+server:
+  port: 10001
+
+#数据库连接
+spring:
+  datasource:
+    username: root
+    password: 804998
+    url: jdbc:mysql://127.0.0.1:13306/random?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #数据连接池
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      auto-commit: true
+      connection-timeout: 20000
+      maximum-pool-size: 12
+  data:
+    #redis配置
+    redis:
+      host: localhost
+      port: 16379
+      password: 804998
+      database: 0
+      #数据连接池
+      lettuce:
+        pool:
+          max-idle: 16
+          max-active: 32
+          min-idle: 8
+  #rabbitmq配置
+  rabbitmq:
+    port: 2765
+    host: localhost
+    username: root
+    password: 804998
+    #这个配置是保证提供者确保消息推送到交换机中，不管成不成功，都会回调
+    publisher-confirm-type: correlated
+    #保证交换机能把消息推送到队列中
+    publisher-returns: true
+    virtual-host: my_vhost
+    #这个配置是保证消费者会消费消息，手动确认
+    listener:
+      simple:
+        acknowledge-mode: manual
+    template:
+      mandatory: true
+  mvc:
+    async:
+      request-timeout: 60000
+mybatis:
+  mapper-locations: classpath:mapper/*.xml # 映射文件位置
+  type-aliases-package: com.zm.user.business.model # 实体类存放位置
+  configuration:
+    map-underscore-to-camel-case: true # 开启驼峰命名转换
+
+dubbo:
+  application:
+    name: random-user
+    qos-enable: true
+    qos-port: 33333
+    qos-accept-foreign-ip: false
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: zookeeper://${zookeeper.address:127.0.0.1}:12181
+    group: random
+
+#日志级别
+logging:
+  level:
+    com.zm: debug
+
+
+

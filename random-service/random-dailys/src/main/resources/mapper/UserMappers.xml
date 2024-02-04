@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zm.random.hello.dao.mapper.UserMapper">
+<!--    <resultMap id="BaseResultMap" type="User">-->
+<!--        <id column="id" property="id" jdbcType="BIGINT"/>-->
+<!--        <result column="name" property="name" jdbcType="VARCHAR"/>-->
+<!--        <result column="age" property="age" javaType="INT"/>-->
+<!--        <result column="email" property="email" jdbcType="VARCHAR"/>-->
+<!--    </resultMap>-->
+
+<!--    <sql id="Base_Column_List">-->
+<!--        id, name, age, email-->
+<!--    </sql>-->
+
+<!--    <select id="getAll" resultMap="BaseResultMap">-->
+<!--        SELECT-->
+<!--        <include refid="Base_Column_List"/>-->
+<!--        FROM user-->
+<!--    </select>-->
+
+<!--    <select id="getOne" parameterType="Integer" resultMap="BaseResultMap">-->
+<!--        SELECT-->
+<!--        <include refid="Base_Column_List"/>-->
+<!--        FROM user-->
+<!--        WHERE id = #{id}-->
+<!--&#45;&#45;         for update-->
+<!--    </select>-->
+
+<!--    <insert id="insert" parameterType="User">-->
+<!--        INSERT INTO-->
+<!--        user-->
+<!--        (name,age,email)-->
+<!--        VALUES-->
+<!--        (#{name}, #{age}, #{email})-->
+<!--    </insert>-->
+
+<!--    <update id="update" parameterType="User">-->
+<!--        UPDATE-->
+<!--        user-->
+<!--        SET-->
+<!--        <if test="name != null">name = #{name},</if>-->
+<!--        <if test="age != null">age = #{age},</if>-->
+<!--        email = #{email}-->
+<!--        WHERE-->
+<!--        id = #{id}-->
+<!--    </update>-->
+
+<!--    <delete id="delete" parameterType="Integer">-->
+<!--        DELETE FROM-->
+<!--        user-->
+<!--        WHERE-->
+<!--        id =#{id}-->
+<!--    </delete>-->
+</mapper>

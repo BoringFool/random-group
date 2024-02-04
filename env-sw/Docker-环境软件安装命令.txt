@@ -1,0 +1,44 @@
+mysql docker run -d --restart=always --name mysql -v D:/docker_v/mysql/data:/var/lib/mysql -v D:/docker_v/mysql/conf:/etc/mysql -v D:/docker_v/mysql/log:/var/log/mysql -p 13306:3306 -e TZ=Asia/Shanghai -e MYSQL_ROOT_PASSWORD=804998 mysql:latest --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+
+redis docker run -d --restart=always -p 16379:6379 --name redis -v D:/docker_v/redis/redis.conf:/etc/redis/redis.conf  -v D:/docker_v/redis/data:/data -d redis:6.2.14-alpine3.18 redis-server /etc/redis/redis.conf --appendonly yes
+
+zookeeper docker run -d -e TZ="Asia/Shanghai" -p 12181:2181 -v D:/docker_v/zookeeper/data:/data --name zookeeper --restart always zookeeper:latest
+
+//image需要下载带management的版本的
+rabbitmq docker run -d --name rabbitmq -p 2765:5672 -p 27651:15672 -v D:/docker_v/rabbitmq/data:/var/lib/rabbitmq -v D:/docker_v/rabbitmq/conf:/etc/rabbitmq -v D:/docker_v/rabbitmq/log:/var/log/rabbitmq --hostname myRabbit -e RABBITMQ_DEFAULT_VHOST=my_vhost  -e RABBITMQ_DEFAULT_USER=root -e RABBITMQ_DEFAULT_PASS=804998 rabbitmq:3.11.26-management
+容器内执行rabbitmq-plugins enable rabbitmq_management启动管理页面
+
+elasticsearch 
+docker run -d --name elasticsearch -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -e "discovery.type=single-node" -v D:/docker_v/elacticsearch/data:/usr/share/elasticsearch/data -v D:/docker_v/elacticsearch/plugins:/usr/share/elasticsearch/plugins -v D:/docker_v/elacticsearch/logs:/usr/share/elasticsearch/logs --privileged --network es-net -p 9201:9200 -p 9301:9300 elasticsearch:8.11.2
+
+kibana
+docker run -d --name kibana -e ELASTICSEARCH_HOSTS=http://elasticsearch:9200 -e "I18N_LOCALE=zh-CN" --network=es-net -p 15601:5601 kibana:8.11.2
+logstash
+docker run -d -p 15044:5044 -p 19600:9600 --name logstash --network=es-net logstash:8.11.2
+
+
+
+配置有问题
+youtrack docker run -d --name youtrack  -p 18080:8080 -v D:/docker_v/youtrack/data:/opt/youtrack/data -v D:/docker_v/youtrack/backups:/opt/youtrack/backups jetbrains/youtrack:2023.3.23390
+/opt/youtrack/logs /opt/youtrack/conf /opt/youtrack/data /opt/youtrack/backups
+
+
+
+
+-d                                                       #后台运行
+--privileged=true                                        #授予容器中的root拥有真正权限
+-e RABBITMQ_DEFAULT_USER=guest                           #可视化界面登录用户名
+-e RABBITMQ_DEFAULT_PASS=guest                           #可视化界面登录密码
+-e RABBITMQ_DEFAULT_VHOST=my_vhost
+-p 15672:15672                                           #可视化界面的端口映射
+-p 5672:5672                                             #服务端口映射    
+-v D:/docker_v/rabbitmq/data:/var/lib/rabbitmq/mnesia     #自定义数据目录：rabbitmq的数据目录
+-v D:/docker_v/rabbitmq/conf:/etc/rabbitmq                #自定义配置目录：rabbitmq的配置目录
+-v D:/docker_v/rabbitmq/log:/var/log/rabbitmq             #自定义日志目录：rabbitmq的日志目录
+
+
+
+mixin: # 注意下面缩进
+  rules:
+    - "DOMAIN-SUFFIX,https://api.app.prod.grazie.aws.intellij.net/,节点选择"
+

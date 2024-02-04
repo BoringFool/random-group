@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <springProperty scope="context" name="application_name" source="dubbo.application.name" defaultValue="默认应用名"/>
+
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <property name="LOG_HOME" value="D:/Git_Repositor/logs" />
+    <conversionRule conversionWord="ip" converterClass="com.zm.log.CustomLogConverter" />
+
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出,%d:日期;%thread:线程名;%-5level：级别,从左显示5个字符宽度;%msg:日志消息;%n:换行符-->
+            <pattern><![CDATA[%ip %date{yyyy-MM-dd HH:mm:ss} | %highlight(%-5level) | %yellow(%thread) | %green(%logger) | %msg%n ]]></pattern>
+        </encoder>
+    </appender>
+
+    <appender name="RABBITMQ"
+              class="org.springframework.amqp.rabbit.logback.AmqpAppender">
+        <layout>
+<!--            <pattern><![CDATA[%ip %date{yyyy-MM-dd HH:mm:ss} | %highlight(%-5level) | %yellow(%thread) | %green(%logger) | %msg%n ]]></pattern>-->
+            <pattern><![CDATA[%ip %date{yyyy-MM-dd HH:mm:ss} | %-5level | %thread | %logger | %msg%n ]]></pattern>
+        </layout>
+        <!--rabbitmq地址 -->
+        <host>localhost</host>
+        <port>2765</port>
+        <virtualHost>my_vhost</virtualHost>
+        <username>root</username>
+        <password>804998</password>
+        <declareExchange>true</declareExchange>
+        <exchangeName>rabbit.log</exchangeName>
+        <exchangeType>direct</exchangeType>
+        <routingKeyPattern>info</routingKeyPattern>
+        <generateId>true</generateId>
+        <charset>UTF-8</charset>
+        <durable>true</durable>
+        <deliveryMode>NON_PERSISTENT</deliveryMode>
+        <autoDelete>false</autoDelete>
+    </appender>
+
+    <logger name="com.zm.user.business" level="info" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="RABBITMQ"/>
+    </logger>
+
+    <!-- 日志输出级别，level 默认值 DEBUG，root 其实是 logger，它是 logger 的根 -->
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="RABBITMQ" />
+    </root>
+
+</configuration>
